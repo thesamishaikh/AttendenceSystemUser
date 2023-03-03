@@ -149,6 +149,7 @@
                     android:layout_width="150dp"
                     app:cardCornerRadius="10dp"
                     android:clickable="true"
+                    android:visibility="invisible"
                     android:focusable="true"
                     android:onClick="openreports"
                     android:layout_marginStart="10dp"

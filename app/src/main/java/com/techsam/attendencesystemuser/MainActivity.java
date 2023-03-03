@@ -69,41 +69,35 @@ public class MainActivity extends AppCompatActivity {
         if (dropDownText.equals("Admin") &&(user.equals("admin") && pass.equals("admin123")) ){
             startActivity(new Intent(MainActivity.this, AdminMainscreen.class));
         }else if(dropDownText.equals("Student")){
-            db.child("Students").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    for(DataSnapshot snap:task.getResult().getChildren()){
-                        Student student = snap.getValue(Student.class);
-                        if(student.getUser().equals(user)&&student.getPass().equals(pass)){
-                            isuser = true;
-                            userKey = student.getId();
-                        }
+            db.child("Students").get().addOnCompleteListener(task -> {
+                for(DataSnapshot snap:task.getResult().getChildren()){
+                    Student student = snap.getValue(Student.class);
+                    if(student.getUser().equals(user)&&student.getPass().equals(pass)){
+                        isuser = true;
+                        userKey = student.getId();
                     }
-                    if(isuser){
-                        startActivity(new Intent(MainActivity.this,StudentMainscreen.class));
-                    }else{
-                        Toast.makeText(MainActivity.this, "Invalid authentication", Toast.LENGTH_SHORT).show();
-                    }
+                }
+                if(isuser){
+                    startActivity(new Intent(MainActivity.this,StudentMainscreen.class));
+                }else{
+                    Toast.makeText(MainActivity.this, "Invalid authentication", Toast.LENGTH_SHORT).show();
                 }
             });
 
         }else if(dropDownText.equals("Teacher")) {
-            db.child("Teachers").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    for (DataSnapshot snap : task.getResult().getChildren()) {
-                        Teacher teacher = snap.getValue(Teacher.class);
-                        if (teacher.getUser().equals(user) && teacher.getPass().equals(pass)) {
-                            isTeacher = true;
-                            userKey = teacher.getId();
-                            break;
-                        }
+            db.child("Teachers").get().addOnCompleteListener(task -> {
+                for (DataSnapshot snap : task.getResult().getChildren()) {
+                    Teacher teacher = snap.getValue(Teacher.class);
+                    if (teacher.getUser().equals(user) && teacher.getPass().equals(pass)) {
+                        isTeacher = true;
+                        userKey = teacher.getId();
+                        break;
                     }
-                    if (isTeacher) {
-                        startActivity(new Intent(MainActivity.this, TeacherMainscreen.class));
-                    } else {
-                        Toast.makeText(MainActivity.this, "Invalid authentication", Toast.LENGTH_SHORT).show();
-                    }
+                }
+                if (isTeacher) {
+                    startActivity(new Intent(MainActivity.this, TeacherMainscreen.class));
+                } else {
+                    Toast.makeText(MainActivity.this, "Invalid authentication", Toast.LENGTH_SHORT).show();
                 }
             });
 
